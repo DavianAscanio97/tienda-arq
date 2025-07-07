@@ -5,7 +5,7 @@ from flask_admin.contrib.sqla import ModelView
 
 # Crear la app Flask
 app = Flask(__name__)
-app.secret_key = 'Rr_66062626'
+app.secret_key = 'Rr_123456'
 
 # Conexión con PostgreSQL
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Rr_66062626@localhost/mitienda'
