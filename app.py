@@ -50,6 +50,14 @@ def home():
 def inicio():
     return render_template("index.html")
 
+@app.route("/ejemplo1")
+def ejemplo1():
+    return render_template("plantilla1.html")
+
+@app.route("/ejemplo2")
+def ejemplo2():
+    return render_template("plantilla2.html")
+
 @app.route('/ventas')
 def ventas():
     productos = Producto.query.all()
