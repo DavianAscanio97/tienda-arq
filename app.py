@@ -44,7 +44,7 @@ admin.add_view(ModelView(Producto, db.session))
 
 @app.route("/")
 def home():
-    return "Hola bienvenidos campistas a mi aplicación"
+    return render_template("index.html")
 
 @app.route("/inicio/")
 def inicio():
