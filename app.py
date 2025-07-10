@@ -10,14 +10,18 @@ database_url = os.getenv(
     'DATABASE_URL',
     'postgresql://postgres:Rr_66062626@localhost/mitienda'
 )
-
-# 2) Render suele devolver DATABASE_URL con prefijo `postgres://`
-#    por compatibilidad con Heroku. SQLAlchemy necesita `postgresql://`
 if database_url.startswith('postgres://'):
     database_url = database_url.replace('postgres://', 'postgresql://', 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Esto fuerza SSL/TLS
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    'connect_args': {
+        'sslmode': 'require'
+    }
+}
 
 db = SQLAlchemy(app)
 
