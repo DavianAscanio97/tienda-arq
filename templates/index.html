@@ -18,16 +18,16 @@
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-      <a class="navbar-brand" href="#">Mi App</a>
+      <a class="navbar-brand" href="#">La tienda Digital</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Servicios</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Productos</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('productos') }}">Productos</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('servicios') }}">Servicios</a></li>
         </ul>
       </div>
     </div>
@@ -38,6 +38,7 @@
     <div class="container">
       <h1 class="display-5">Bienvenidos campistas a mi aplicación</h1>
       <p class="lead">Esta es nuestra aplicación web para establecer los aspectos necesarios que se realizarán dentro de su ejecución.</p>
+    <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="Logo de la app" width="300">
     </div>
   </header>
 

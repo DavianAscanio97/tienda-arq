@@ -2,16 +2,23 @@ from flask import Flask, request, render_template, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+import os
 
 # Crear la app Flask
 app = Flask(__name__)
-app.secret_key = 'Rr_123456'
+database_url = os.getenv(
+    'DATABASE_URL',
+    'postgresql://postgres:Rr_66062626@localhost/mitienda'
+)
 
-# Conexión con PostgreSQL
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Rr_66062626@localhost/mitienda'
+# 2) Render suele devolver DATABASE_URL con prefijo `postgres://`
+#    por compatibilidad con Heroku. SQLAlchemy necesita `postgresql://`
+if database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Inicializar SQLAlchemy directamente
 db = SQLAlchemy(app)
 
 # Modelos
@@ -50,13 +57,13 @@ def home():
 def inicio():
     return render_template("index.html")
 
-@app.route("/ejemplo1")
-def ejemplo1():
-    return render_template("plantilla1.html")
+@app.route('/productos')
+def productos():
+    return render_template('plantilla1.html')
 
-@app.route("/ejemplo2")
-def ejemplo2():
-    return render_template("plantilla2.html")
+@app.route('/servicios')
+def servicios():
+    return render_template('plantilla2.html')
 
 @app.route('/ventas')
 def ventas():
