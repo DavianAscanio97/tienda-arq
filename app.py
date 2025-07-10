@@ -6,6 +6,7 @@ import os
 
 # Crear la app Flask
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY', '32Rr_66062626')
 database_url = os.getenv('DATABASE_URL')
 if not database_url:
     # Fallback local
