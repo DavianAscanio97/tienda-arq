@@ -6,21 +6,18 @@ import os
 
 # Crear la app Flask
 app = Flask(__name__)
-database_url = os.getenv(
-    'DATABASE_URL',
-    'postgresql://postgres:Rr_66062626@localhost/mitienda'
-)
-if database_url.startswith('postgres://'):
-    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+database_url = os.getenv('DATABASE_URL')
+if not database_url:
+    # Fallback local
+    database_url = 'postgresql://postgres:Rr_66062626@localhost/mitienda'
 
+# 2) Configura SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Esto fuerza SSL/TLS
+# 3) Fuerza SSL/TLS (ojo: necesario solo si tu URL no incluye sslmode)
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'connect_args': {
-        'sslmode': 'require'
-    }
+    'connect_args': {'sslmode': 'require'}
 }
 
 db = SQLAlchemy(app)
