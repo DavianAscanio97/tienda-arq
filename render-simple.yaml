@@ -3,7 +3,7 @@ services:
     name: tienda-arq
     env: python
     plan: free
-    buildCommand: chmod +x build-render.sh && ./build-render.sh
+    buildCommand: pip install -r requirements.txt
     startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION

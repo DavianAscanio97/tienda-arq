@@ -94,7 +94,19 @@ El proyecto incluye archivos de configuración para Render:
 Render configurará automáticamente:
 - `DATABASE_URL`: URL de la base de datos PostgreSQL
 - `SECRET_KEY`: Clave secreta generada automáticamente
-- `PYTHON_VERSION`: Versión de Python (3.9.16)
+- `PYTHON_VERSION`: Versión de Python (3.11.7)
+
+### Configuraciones Alternativas
+
+Si tienes problemas con la configuración principal, puedes usar:
+
+1. **`render-simple.yaml`** - Configuración mínima
+2. **`render-alt.yaml`** - Configuración con entorno virtual
+3. **`post-deploy.py`** - Script para configuración post-despliegue
+
+Para usar una configuración alternativa:
+1. Renombra el archivo deseado a `render.yaml`
+2. O especifica el archivo en la configuración de Render
 
 ## Estructura del Proyecto
 
@@ -184,9 +196,10 @@ tienda-arq/
 - Verifica que el usuario tenga `is_admin = True` en la base de datos
 
 ### Error de psycopg2 en Render (Python 3.13)
-- **Solución implementada:** Cambiado a Python 3.11.7 y psycopg2-binary 2.9.9
-- **Archivos actualizados:** `requirements.txt`, `render.yaml`, `runtime.txt`
-- **Scripts mejorados:** `migrate.py`, `setup.py` para mejor compatibilidad
+- **Solución implementada:** Cambiado a psycopg3 (psycopg[binary]==3.1.13) para compatibilidad con Python 3.13
+- **Archivos actualizados:** `requirements.txt`, `app.py` (dialecto postgresql+psycopg)
+- **Scripts mejorados:** `migrate.py`, `setup.py`, `post-deploy.py` para mejor compatibilidad
+- **Configuraciones alternativas:** `render-simple.yaml`, `render-alt.yaml` disponibles
 
 ### Error de puerto en Render
 - **Solución implementada:** Configurado para usar `$PORT` automáticamente

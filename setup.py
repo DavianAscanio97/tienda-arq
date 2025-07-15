@@ -29,8 +29,22 @@ def setup_environment():
     
     if python_version.major == 3 and python_version.minor >= 11:
         print("✅ Versión de Python compatible")
+    elif python_version.major == 3 and python_version.minor == 13:
+        print("⚠️  Python 3.13 detectado - usando psycopg3 para compatibilidad")
     else:
         print("⚠️  Se recomienda Python 3.11+ para mejor compatibilidad")
+    
+    # Verificar si psycopg está disponible
+    try:
+        import psycopg
+        print("✅ psycopg3 disponible")
+    except ImportError:
+        try:
+            import psycopg2
+            print("✅ psycopg2 disponible")
+        except ImportError:
+            print("❌ Error: No se encontró psycopg o psycopg2")
+            return False
     
     return True
 

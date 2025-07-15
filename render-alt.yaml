@@ -3,8 +3,16 @@ services:
     name: tienda-arq
     env: python
     plan: free
-    buildCommand: chmod +x build-render.sh && ./build-render.sh
-    startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT
+    buildCommand: |
+      python3.11 -m venv venv
+      source venv/bin/activate
+      pip install -r requirements.txt
+      python setup.py
+      python migrate.py
+      python crear_admin.py
+    startCommand: |
+      source venv/bin/activate
+      gunicorn wsgi:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.7
