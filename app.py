@@ -10,7 +10,7 @@ app.secret_key = os.getenv('SECRET_KEY', '32Rr_66062626')
 database_url = os.getenv('DATABASE_URL')
 if not database_url:
     # Fallback local
-    database_url = 'postgresql://postgres:Rr_66062626@localhost/mitienda'
+    database_url = 'postgresql://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a:5432/arq_cloud_tienda?sslmode=require'
 
 # 2) Configura SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
