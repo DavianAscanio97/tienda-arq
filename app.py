@@ -9,7 +9,12 @@ import os
 # Crear la app Flask
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', '32Rr_66062626')
+
+# Configuración de base de datos para Render
 database_url = os.getenv('DATABASE_URL')
+if database_url and database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+
 if not database_url:
     # Fallback local
     database_url = 'postgresql://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a:5432/arq_cloud_tienda?sslmode=require'

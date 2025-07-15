@@ -12,32 +12,42 @@ Este proyecto implementa un sistema completo de tienda digital con autenticació
 
 ## Instalación
 
-### 1. Instalar dependencias
+### Opción 1: Despliegue en Render (Recomendado)
+
+1. **Fork o clona este repositorio**
+2. **Conecta tu repositorio a Render**
+3. **Crea un nuevo Web Service en Render**
+4. **Configura las variables de entorno automáticamente**
+5. **¡Listo! Render ejecutará automáticamente las migraciones**
+
+### Opción 2: Instalación Local
+
+#### 1. Instalar dependencias
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configurar variables de entorno (opcional)
+#### 2. Configurar variables de entorno (opcional)
 
 ```bash
 export SECRET_KEY="tu_clave_secreta_aqui"
 export DATABASE_URL="tu_url_de_postgresql"
 ```
 
-### 3. Actualizar la base de datos
+#### 3. Actualizar la base de datos
 
 ```bash
 python actualizar_db.py
 ```
 
-### 4. Crear usuario administrador
+#### 4. Crear usuario administrador
 
 ```bash
 python crear_admin.py
 ```
 
-### 5. Ejecutar la aplicación
+#### 5. Ejecutar la aplicación
 
 ```bash
 python app.py
@@ -48,11 +58,43 @@ python app.py
 ### Usuario Administrador (creado automáticamente)
 - **Email:** admin@tienda.com
 - **Contraseña:** admin123
-- **URL del admin:** http://localhost:5000/admin
+- **URL del admin:** 
+  - Local: http://localhost:5000/admin
+  - Render: https://tu-app.onrender.com/admin
 
 ### Registro de nuevos usuarios
-- **URL de registro:** http://localhost:5000/register
-- **URL de login:** http://localhost:5000/login
+- **URL de registro:** 
+  - Local: http://localhost:5000/register
+  - Render: https://tu-app.onrender.com/register
+- **URL de login:** 
+  - Local: http://localhost:5000/login
+  - Render: https://tu-app.onrender.com/login
+
+## Despliegue en Render
+
+### Configuración Automática
+
+El proyecto incluye archivos de configuración para Render:
+
+- **`render.yaml`**: Configuración automática del servicio y base de datos
+- **`build.sh`**: Script que ejecuta migraciones automáticamente
+- **`wsgi.py`**: Punto de entrada para Gunicorn
+
+### Pasos para Desplegar
+
+1. **Sube tu código a GitHub**
+2. **Ve a [Render.com](https://render.com)**
+3. **Crea un nuevo "Web Service"**
+4. **Conecta tu repositorio de GitHub**
+5. **Render detectará automáticamente la configuración**
+6. **Las migraciones se ejecutarán automáticamente**
+
+### Variables de Entorno en Render
+
+Render configurará automáticamente:
+- `DATABASE_URL`: URL de la base de datos PostgreSQL
+- `SECRET_KEY`: Clave secreta generada automáticamente
+- `PYTHON_VERSION`: Versión de Python (3.9.16)
 
 ## Estructura del Proyecto
 
@@ -61,9 +103,13 @@ tienda-arq/
 ├── app.py                 # Aplicación principal Flask
 ├── models.py              # Modelos de base de datos
 ├── requirements.txt       # Dependencias Python
+├── wsgi.py                # Punto de entrada para producción
+├── render.yaml            # Configuración para Render
+├── build.sh               # Script de build para Render
 ├── crear_tablas.py        # Script para crear tablas
 ├── actualizar_db.py       # Script para actualizar BD
 ├── crear_admin.py         # Script para crear admin
+├── .gitignore             # Archivos a ignorar en Git
 ├── static/                # Archivos estáticos
 │   └── img/
 │       └── logo.jpeg
