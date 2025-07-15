@@ -6,7 +6,7 @@ set -o errexit
 pip install -r requirements.txt
 
 # Ejecutar migraciones de base de datos
-python actualizar_db.py
+python migrate.py
 
 # Crear usuario administrador si no existe
 python crear_admin.py 

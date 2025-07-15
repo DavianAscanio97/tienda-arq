@@ -181,4 +181,13 @@ tienda-arq/
 
 ### Error de permisos de administrador
 - Ejecuta `python crear_admin.py` para crear el usuario admin
-- Verifica que el usuario tenga `is_admin = True` en la base de datos 
+- Verifica que el usuario tenga `is_admin = True` en la base de datos
+
+### Error de psycopg2 en Render (Python 3.13)
+- **Solución implementada:** Cambiado a Python 3.11.7 y psycopg2-binary 2.9.9
+- **Archivos actualizados:** `requirements.txt`, `render.yaml`, `runtime.txt`
+- **Scripts mejorados:** `migrate.py`, `setup.py` para mejor compatibilidad
+
+### Error de puerto en Render
+- **Solución implementada:** Configurado para usar `$PORT` automáticamente
+- **Archivos actualizados:** `wsgi.py`, `app.py`, `Procfile` 
