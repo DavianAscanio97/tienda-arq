@@ -1,0 +1,104 @@
+{% extends "admin-base.html" %}
+
+{% block title %}Gestión de Usuarios{% endblock %}
+
+{% block page_title %}Gestión de Usuarios{% endblock %}
+
+{% block header_actions %}
+<a href="/admin/usuario/new/" class="btn btn-admin btn-success-admin">
+    <i class="fas fa-user-plus"></i> Nuevo Usuario
+</a>
+<a href="{{ url_for('admin_panel') }}" class="btn btn-admin btn-primary-admin">
+    <i class="fas fa-arrow-left"></i> Volver al Dashboard
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="card-header">
+        <h3><i class="fas fa-users"></i> Lista de Usuarios</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.nom_usuario }}</td>
+                        <td>{{ usuario.ape_usuario }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>
+                            {% if usuario.is_admin %}
+                                <span class="badge badge-admin badge-primary">Administrador</span>
+                            {% else %}
+                                <span class="badge badge-admin badge-success">Usuario</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge badge-admin badge-success">Activo</span>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="/admin/usuario/edit/{{ usuario.id }}/" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="/admin/usuario/view/{{ usuario.id }}/" class="btn btn-sm btn-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ usuario.id }})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function confirmDelete(userId) {
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    const form = document.getElementById('deleteForm');
+    form.action = `/admin/usuario/delete/${userId}/`;
+    modal.show();
+}
+</script>
+{% endblock %} 
