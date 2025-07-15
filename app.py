@@ -17,19 +17,19 @@ database_url = os.getenv('DATABASE_URL')
 try:
     import psycopg
     driver = "psycopg"
-    print(f"🔧 Driver detectado: {driver}")
+    print(f"Driver detectado: {driver}")
 except ImportError:
     try:
         import psycopg2
         driver = "psycopg2"
-        print(f"🔧 Driver detectado: {driver}")
+        print(f"Driver detectado: {driver}")
     except ImportError:
         driver = "psycopg2"  # fallback
-        print(f"⚠️  No se encontró driver, usando fallback: {driver}")
+        print(f"No se encontro driver, usando fallback: {driver}")
 
 # Configurar URL según el driver disponible
 if database_url:
-    print(f"📡 URL original: {database_url}")
+    print(f"URL original: {database_url}")
     if database_url.startswith('postgres://'):
         if driver == "psycopg":
             database_url = database_url.replace('postgres://', 'postgresql+psycopg://', 1)
@@ -37,15 +37,15 @@ if database_url:
             database_url = database_url.replace('postgres://', 'postgresql://', 1)
     elif database_url.startswith('postgresql://') and driver == "psycopg":
         database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
-    print(f"🔧 URL configurada: {database_url}")
+    print(f"URL configurada: {database_url}")
 
 if not database_url:
     # Fallback local
     if driver == "psycopg":
-        database_url = 'postgresql+psycopg://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a.oregon-postgres.render.com:5432/arq_cloud_tienda?sslmode=require'
+        database_url = 'postgresql+psycopg://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a.oregon-postgres.render.com/arq_cloud_tienda?sslmode=require'
     else:
-        database_url = 'postgresql://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a.oregon-postgres.render.com:5432/arq_cloud_tienda?sslmode=require'
-    print(f"🔧 URL fallback: {database_url}")
+        database_url = 'postgresql://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a.oregon-postgres.render.com/arq_cloud_tienda?sslmode=require'
+    print(f"URL fallback: {database_url}")
 
 # 2) Configura SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
