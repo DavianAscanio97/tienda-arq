@@ -96,6 +96,20 @@ Render configurará automáticamente:
 - `SECRET_KEY`: Clave secreta generada automáticamente
 - `PYTHON_VERSION`: Versión de Python (3.11.7)
 
+### Base de Datos Externa de Render
+
+Si tienes una base de datos externa de Render:
+
+1. **Usa `render-external-db.yaml`** - Configuración específica para BD externa
+2. **Ejecuta `python setup-external-db.py`** - Configura la BD externa
+3. **Ejecuta `python debug-db.py`** - Diagnostica problemas de conexión
+
+**Credenciales de ejemplo:**
+- Host: dpg-d1qq7ibipnbc73elodog-a.oregon-postgres.render.com
+- Puerto: 5432
+- Base de datos: arq_cloud_tienda
+- Usuario: arq_cloud_tienda_user
+
 ### Configuraciones Alternativas
 
 Si tienes problemas con la configuración principal, puedes usar:
@@ -110,7 +124,8 @@ Si tienes problemas con la configuración principal, puedes usar:
 1. **`render-simple.yaml`** - Configuración mínima
 2. **`render-psycopg.yaml`** - Usa psycopg sin binary
 3. **`render-psycopg2.yaml`** - Usa psycopg2-binary
-4. **`render-alt.yaml`** - Configuración con entorno virtual
+4. **`render-external-db.yaml`** - Para base de datos externa de Render
+5. **`render-alt.yaml`** - Configuración con entorno virtual
 
 #### Scripts de Prueba:
 - **`test-deps.py`** - Prueba automáticamente todas las configuraciones

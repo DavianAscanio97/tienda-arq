@@ -17,15 +17,19 @@ database_url = os.getenv('DATABASE_URL')
 try:
     import psycopg
     driver = "psycopg"
+    print(f"🔧 Driver detectado: {driver}")
 except ImportError:
     try:
         import psycopg2
         driver = "psycopg2"
+        print(f"🔧 Driver detectado: {driver}")
     except ImportError:
         driver = "psycopg2"  # fallback
+        print(f"⚠️  No se encontró driver, usando fallback: {driver}")
 
 # Configurar URL según el driver disponible
 if database_url:
+    print(f"📡 URL original: {database_url}")
     if database_url.startswith('postgres://'):
         if driver == "psycopg":
             database_url = database_url.replace('postgres://', 'postgresql+psycopg://', 1)
@@ -33,13 +37,15 @@ if database_url:
             database_url = database_url.replace('postgres://', 'postgresql://', 1)
     elif database_url.startswith('postgresql://') and driver == "psycopg":
         database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
+    print(f"🔧 URL configurada: {database_url}")
 
 if not database_url:
     # Fallback local
     if driver == "psycopg":
-        database_url = 'postgresql+psycopg://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a:5432/arq_cloud_tienda?sslmode=require'
+        database_url = 'postgresql+psycopg://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a.oregon-postgres.render.com:5432/arq_cloud_tienda?sslmode=require'
     else:
-        database_url = 'postgresql://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a:5432/arq_cloud_tienda?sslmode=require'
+        database_url = 'postgresql://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a.oregon-postgres.render.com:5432/arq_cloud_tienda?sslmode=require'
+    print(f"🔧 URL fallback: {database_url}")
 
 # 2) Configura SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
@@ -139,24 +145,33 @@ def ventas():
 # Rutas de autenticación
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+    try:
+        if current_user.is_authenticated:
+            return redirect(url_for('home'))
         
-        user = Usuario.query.filter_by(email=email).first()
+        if request.method == 'POST':
+            email = request.form.get('email')
+            password = request.form.get('password')
+            
+            if not email or not password:
+                flash('Por favor completa todos los campos', 'error')
+                return render_template('login.html')
+            
+            user = Usuario.query.filter_by(email=email).first()
+            
+            if user and user.check_password(password):
+                login_user(user)
+                flash('¡Inicio de sesión exitoso!', 'success')
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('home'))
+            else:
+                flash('Email o contraseña incorrectos', 'error')
         
-        if user and user.check_password(password):
-            login_user(user)
-            flash('¡Inicio de sesión exitoso!', 'success')
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
-        else:
-            flash('Email o contraseña incorrectos', 'error')
-    
-    return render_template('login.html')
+        return render_template('login.html')
+    except Exception as e:
+        print(f"❌ Error en login: {e}")
+        flash('Error interno del servidor. Por favor intenta de nuevo.', 'error')
+        return render_template('login.html')
 
 @app.route('/logout')
 @login_required

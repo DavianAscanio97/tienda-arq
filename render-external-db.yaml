@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: tienda-arq
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements-psycopg2.txt && python setup-external-db.py
+    startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.7
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: postgresql://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a.oregon-postgres.render.com:5432/arq_cloud_tienda?sslmode=require 
