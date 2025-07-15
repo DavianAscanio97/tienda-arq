@@ -147,6 +147,8 @@ def ventas():
 def login():
     try:
         if current_user.is_authenticated:
+            if current_user.is_admin:
+                return redirect(url_for('admin_panel'))
             return redirect(url_for('home'))
         
         if request.method == 'POST':
@@ -161,15 +163,20 @@ def login():
             
             if user and user.check_password(password):
                 login_user(user)
-                flash('¡Inicio de sesión exitoso!', 'success')
-                next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('home'))
+                flash(f'¡Bienvenido {user.nom_usuario} {user.ape_usuario}!', 'success')
+                
+                # Redirigir según el tipo de usuario
+                if user.is_admin:
+                    return redirect(url_for('admin_panel'))
+                else:
+                    next_page = request.args.get('next')
+                    return redirect(next_page) if next_page else redirect(url_for('home'))
             else:
                 flash('Email o contraseña incorrectos', 'error')
         
         return render_template('login.html')
     except Exception as e:
-        print(f"❌ Error en login: {e}")
+        print(f"Error en login: {e}")
         flash('Error interno del servidor. Por favor intenta de nuevo.', 'error')
         return render_template('login.html')
 
@@ -221,7 +228,18 @@ def admin_panel():
     if not current_user.is_admin:
         flash('No tienes permisos para acceder al panel de administración', 'error')
         return redirect(url_for('home'))
-    return redirect('/admin/')
+    
+    # Obtener estadísticas
+    usuarios_count = Usuario.query.count()
+    productos_count = Producto.query.count()
+    categorias_count = Categoria.query.count()
+    ventas_count = 0  # Por ahora 0, se puede implementar después
+    
+    return render_template('admin-welcome.html', 
+                         usuarios_count=usuarios_count,
+                         productos_count=productos_count,
+                         categorias_count=categorias_count,
+                         ventas_count=ventas_count)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

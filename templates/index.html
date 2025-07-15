@@ -3,53 +3,245 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mi Aplicación Web</title>
+  <title>La Tienda Digital - Tu tienda online</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    footer {
-      background-color: #f8f9fa;
-      padding: 20px 0;
-      margin-top: 50px;
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --success-color: #28a745;
+      --warning-color: #ffc107;
+      --danger-color: #dc3545;
+      --dark-color: #343a40;
+      --light-color: #f8f9fa;
     }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+    }
+
+    .navbar {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      padding: 6rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .hero-logo {
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .hero-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .features-section {
+      padding: 5rem 0;
+      background: var(--light-color);
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--dark-color);
+      margin-bottom: 1rem;
+    }
+
+    .feature-description {
+      color: #6c757d;
+      line-height: 1.6;
+    }
+
     .alert {
+      border-radius: 15px;
+      border: none;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown-menu {
       border-radius: 10px;
       border: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown-item {
+      padding: 0.75rem 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--dark-color) 0%, #495057 100%);
+      color: white;
+      padding: 3rem 0 2rem;
+      margin-top: 0;
+    }
+
+    .footer-content {
+      text-align: center;
+    }
+
+    .footer-links {
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .social-links {
+      margin-bottom: 2rem;
+    }
+
+    .social-links a {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 40px;
+      margin: 0 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
 <body>
 
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <a class="navbar-brand" href="#">La tienda Digital</a>
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-store"></i> La Tienda Digital
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav me-auto">
-          <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('productos') }}">Productos</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('servicios') }}">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-home"></i> Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-envelope"></i> Contacto</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('productos') }}"><i class="fas fa-box"></i> Productos</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('servicios') }}"><i class="fas fa-cogs"></i> Servicios</a></li>
         </ul>
         <ul class="navbar-nav">
           {% if current_user.is_authenticated %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                {{ current_user.nom_usuario }} {{ current_user.ape_usuario }}
+                <i class="fas fa-user"></i> {{ current_user.nom_usuario }} {{ current_user.ape_usuario }}
               </a>
               <ul class="dropdown-menu">
                 {% if current_user.is_admin %}
-                  <li><a class="dropdown-item" href="{{ url_for('admin_panel') }}">Panel Admin</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('admin_panel') }}"><i class="fas fa-crown"></i> Panel Admin</a></li>
                   <li><hr class="dropdown-divider"></li>
                 {% endif %}
-                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
               </ul>
             </li>
           {% else %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Registrarse</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}"><i class="fas fa-user-plus"></i> Registrarse</a></li>
           {% endif %}
         </ul>
       </div>
@@ -62,6 +254,7 @@
       <div class="container mt-3">
         {% for category, message in messages %}
           <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+            <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }}"></i>
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
           </div>
@@ -70,38 +263,88 @@
     {% endif %}
   {% endwith %}
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <header class="bg-light py-5 text-center">
+  <!-- HERO SECTION -->
+  <section class="hero-section">
     <div class="container">
-      <h1 class="display-5">Bienvenidos campistas a mi aplicación</h1>
-      <p class="lead">Esta es nuestra aplicación web para establecer los aspectos necesarios que se realizarán dentro de su ejecución.</p>
-    <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="Logo de la app" width="300">
-    </div>
-  </header>
-
-  <section class="py-5">
-    <div class="container">
-      <div class="row text-center">
-        <div class="col-md-4">
-          <h4>Sección 1</h4>
-          <p>Descripción o contenido relacionado con esta sección.</p>
+      <div class="row align-items-center">
+        <div class="col-lg-6 hero-content">
+          <h1 class="hero-title">Bienvenidos a La Tienda Digital</h1>
+          <p class="hero-subtitle">Descubre nuestra increíble selección de productos y servicios de alta calidad. Tu tienda online de confianza.</p>
+          <div class="d-flex gap-3">
+            <a href="{{ url_for('productos') }}" class="btn btn-light btn-lg">
+              <i class="fas fa-shopping-cart"></i> Ver Productos
+            </a>
+            <a href="{{ url_for('servicios') }}" class="btn btn-outline-light btn-lg">
+              <i class="fas fa-cogs"></i> Nuestros Servicios
+            </a>
+          </div>
         </div>
-        <div class="col-md-4">
-          <h4>Sección 2</h4>
-          <p>Otra descripción o bloque de información relevante.</p>
-        </div>
-        <div class="col-md-4">
-          <h4>Sección 3</h4>
-          <p>Más contenido aquí. Puede ser productos, noticias o enlaces.</p>
+        <div class="col-lg-6 text-center">
+          <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="Logo de la app" class="hero-logo" width="400">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PIE DE PÁGINA -->
-  <footer class="text-center">
+  <!-- FEATURES SECTION -->
+  <section class="features-section">
     <div class="container">
-      <p class="mb-0">&copy; 2025 Mi Aplicación Web. Todos los derechos reservados.</p>
+      <div class="row text-center mb-5">
+        <div class="col-12">
+          <h2 class="display-4 fw-bold">¿Por qué elegirnos?</h2>
+          <p class="lead text-muted">Descubre las ventajas de comprar en La Tienda Digital</p>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-shipping-fast"></i>
+            </div>
+            <h3 class="feature-title">Envío Rápido</h3>
+            <p class="feature-description">Recibe tus productos en tiempo récord con nuestro servicio de envío express.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="feature-title">Calidad Garantizada</h3>
+            <p class="feature-description">Todos nuestros productos pasan por rigurosos controles de calidad.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-headset"></i>
+            </div>
+            <h3 class="feature-title">Soporte 24/7</h3>
+            <p class="feature-description">Nuestro equipo de soporte está disponible para ayudarte en cualquier momento.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="#"><i class="fas fa-home"></i> Inicio</a>
+          <a href="#"><i class="fas fa-box"></i> Productos</a>
+          <a href="#"><i class="fas fa-cogs"></i> Servicios</a>
+          <a href="#"><i class="fas fa-envelope"></i> Contacto</a>
+        </div>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p class="mb-0">&copy; 2025 La Tienda Digital. Todos los derechos reservados.</p>
+      </div>
     </div>
   </footer>
 
