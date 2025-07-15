@@ -3,7 +3,7 @@ services:
     name: tienda-arq
     env: python
     plan: free
-    buildCommand: pip install -r requirements-flexible.txt
+    buildCommand: pip install -r requirements-psycopg2.txt
     startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION

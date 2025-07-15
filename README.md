@@ -100,13 +100,25 @@ Render configurará automáticamente:
 
 Si tienes problemas con la configuración principal, puedes usar:
 
+#### Archivos de Requirements:
+1. **`requirements.txt`** - psycopg[binary]==3.2.9
+2. **`requirements-psycopg.txt`** - psycopg==3.2.9 (sin binary)
+3. **`requirements-psycopg2.txt`** - psycopg2-binary==2.9.9
+4. **`requirements-flexible.txt`** - Versiones flexibles
+
+#### Configuraciones de Render:
 1. **`render-simple.yaml`** - Configuración mínima
-2. **`render-alt.yaml`** - Configuración con entorno virtual
-3. **`post-deploy.py`** - Script para configuración post-despliegue
+2. **`render-psycopg.yaml`** - Usa psycopg sin binary
+3. **`render-psycopg2.yaml`** - Usa psycopg2-binary
+4. **`render-alt.yaml`** - Configuración con entorno virtual
+
+#### Scripts de Prueba:
+- **`test-deps.py`** - Prueba automáticamente todas las configuraciones
 
 Para usar una configuración alternativa:
 1. Renombra el archivo deseado a `render.yaml`
 2. O especifica el archivo en la configuración de Render
+3. Ejecuta `python test-deps.py` para encontrar la mejor configuración
 
 ## Estructura del Proyecto
 
@@ -196,10 +208,15 @@ tienda-arq/
 - Verifica que el usuario tenga `is_admin = True` en la base de datos
 
 ### Error de psycopg2 en Render (Python 3.13)
-- **Solución implementada:** Cambiado a psycopg3 (psycopg[binary]==3.1.13) para compatibilidad con Python 3.13
-- **Archivos actualizados:** `requirements.txt`, `app.py` (dialecto postgresql+psycopg)
-- **Scripts mejorados:** `migrate.py`, `setup.py`, `post-deploy.py` para mejor compatibilidad
-- **Configuraciones alternativas:** `render-simple.yaml`, `render-alt.yaml` disponibles
+- **Solución implementada:** Múltiples opciones de drivers PostgreSQL
+- **Archivos actualizados:** `requirements.txt`, `app.py` (detección automática de driver)
+- **Scripts mejorados:** `migrate.py`, `setup.py`, `post-deploy.py`, `test-deps.py`
+- **Configuraciones alternativas:** Múltiples archivos de requirements y render.yaml
+
+### Error de versión de psycopg[binary]
+- **Solución implementada:** Versión actualizada a 3.2.9 y múltiples alternativas
+- **Archivos creados:** `requirements-psycopg.txt`, `requirements-psycopg2.txt`, `requirements-flexible.txt`
+- **Configuraciones:** `render-psycopg.yaml`, `render-psycopg2.yaml`
 
 ### Error de puerto en Render
 - **Solución implementada:** Configurado para usar `$PORT` automáticamente

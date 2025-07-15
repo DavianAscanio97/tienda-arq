@@ -12,14 +12,34 @@ app.secret_key = os.getenv('SECRET_KEY', '32Rr_66062626')
 
 # Configuración de base de datos para Render
 database_url = os.getenv('DATABASE_URL')
-if database_url and database_url.startswith('postgres://'):
-    database_url = database_url.replace('postgres://', 'postgresql+psycopg://', 1)
-elif database_url and database_url.startswith('postgresql://'):
-    database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
+
+# Detectar qué driver de PostgreSQL está disponible
+try:
+    import psycopg
+    driver = "psycopg"
+except ImportError:
+    try:
+        import psycopg2
+        driver = "psycopg2"
+    except ImportError:
+        driver = "psycopg2"  # fallback
+
+# Configurar URL según el driver disponible
+if database_url:
+    if database_url.startswith('postgres://'):
+        if driver == "psycopg":
+            database_url = database_url.replace('postgres://', 'postgresql+psycopg://', 1)
+        else:
+            database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    elif database_url.startswith('postgresql://') and driver == "psycopg":
+        database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
 
 if not database_url:
     # Fallback local
-    database_url = 'postgresql+psycopg://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a:5432/arq_cloud_tienda?sslmode=require'
+    if driver == "psycopg":
+        database_url = 'postgresql+psycopg://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a:5432/arq_cloud_tienda?sslmode=require'
+    else:
+        database_url = 'postgresql://arq_cloud_tienda_user:mGuWS9nVgNMJslIDPBOOMX3AEmoser6E@dpg-d1qq7ibipnbc73elodog-a:5432/arq_cloud_tienda?sslmode=require'
 
 # 2) Configura SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
