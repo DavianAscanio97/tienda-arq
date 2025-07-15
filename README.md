@@ -1,0 +1,138 @@
+# Sistema de Tienda Digital con Autenticación
+
+Este proyecto implementa un sistema completo de tienda digital con autenticación de usuarios y panel de administración.
+
+## Características
+
+- ✅ Sistema de autenticación completo (login/registro)
+- ✅ Panel de administración protegido
+- ✅ Gestión de usuarios, productos y categorías
+- ✅ Interfaz moderna y responsive
+- ✅ Base de datos PostgreSQL
+
+## Instalación
+
+### 1. Instalar dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Configurar variables de entorno (opcional)
+
+```bash
+export SECRET_KEY="tu_clave_secreta_aqui"
+export DATABASE_URL="tu_url_de_postgresql"
+```
+
+### 3. Actualizar la base de datos
+
+```bash
+python actualizar_db.py
+```
+
+### 4. Crear usuario administrador
+
+```bash
+python crear_admin.py
+```
+
+### 5. Ejecutar la aplicación
+
+```bash
+python app.py
+```
+
+## Acceso al Sistema
+
+### Usuario Administrador (creado automáticamente)
+- **Email:** admin@tienda.com
+- **Contraseña:** admin123
+- **URL del admin:** http://localhost:5000/admin
+
+### Registro de nuevos usuarios
+- **URL de registro:** http://localhost:5000/register
+- **URL de login:** http://localhost:5000/login
+
+## Estructura del Proyecto
+
+```
+tienda-arq/
+├── app.py                 # Aplicación principal Flask
+├── models.py              # Modelos de base de datos
+├── requirements.txt       # Dependencias Python
+├── crear_tablas.py        # Script para crear tablas
+├── actualizar_db.py       # Script para actualizar BD
+├── crear_admin.py         # Script para crear admin
+├── static/                # Archivos estáticos
+│   └── img/
+│       └── logo.jpeg
+└── templates/             # Plantillas HTML
+    ├── index.html         # Página principal
+    ├── login.html         # Página de login
+    ├── register.html      # Página de registro
+    ├── plantilla1.html    # Página de productos
+    ├── plantilla2.html    # Página de servicios
+    └── ventas.html        # Página de ventas
+```
+
+## Funcionalidades
+
+### Sistema de Autenticación
+- Registro de usuarios con validación
+- Login seguro con hash de contraseñas
+- Logout automático
+- Protección de rutas con `@login_required`
+
+### Panel de Administración
+- Gestión de usuarios (CRUD)
+- Gestión de productos (CRUD)
+- Gestión de categorías (CRUD)
+- Acceso restringido solo para administradores
+
+### Seguridad
+- Contraseñas hasheadas con Werkzeug
+- Sesiones seguras con Flask-Login
+- Validación de formularios
+- Protección CSRF implícita
+
+## Rutas Disponibles
+
+- `/` - Página principal
+- `/login` - Iniciar sesión
+- `/register` - Registrarse
+- `/logout` - Cerrar sesión
+- `/admin` - Panel de administración
+- `/productos` - Página de productos
+- `/servicios` - Página de servicios
+- `/ventas` - Página de ventas
+
+## Tecnologías Utilizadas
+
+- **Backend:** Flask, SQLAlchemy, Flask-Login
+- **Base de Datos:** PostgreSQL
+- **Frontend:** Bootstrap 5, HTML5, CSS3
+- **Autenticación:** Flask-Login, Werkzeug
+- **Admin:** Flask-Admin
+
+## Notas Importantes
+
+1. **Primera vez:** Ejecuta `actualizar_db.py` antes de `crear_admin.py`
+2. **Seguridad:** Cambia la contraseña del admin después del primer login
+3. **Base de datos:** Asegúrate de que PostgreSQL esté configurado correctamente
+4. **Variables de entorno:** Configura `SECRET_KEY` y `DATABASE_URL` para producción
+
+## Solución de Problemas
+
+### Error de conexión a la base de datos
+- Verifica que PostgreSQL esté ejecutándose
+- Confirma las credenciales en `app.py`
+- Asegúrate de que la base de datos exista
+
+### Error de importación de módulos
+- Instala todas las dependencias: `pip install -r requirements.txt`
+- Verifica que estés en el directorio correcto
+
+### Error de permisos de administrador
+- Ejecuta `python crear_admin.py` para crear el usuario admin
+- Verifica que el usuario tenga `is_admin = True` en la base de datos 

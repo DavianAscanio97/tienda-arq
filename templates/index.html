@@ -11,6 +11,10 @@
       padding: 20px 0;
       margin-top: 50px;
     }
+    .alert {
+      border-radius: 10px;
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -23,15 +27,48 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="menu">
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('productos') }}">Productos</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('servicios') }}">Servicios</a></li>
         </ul>
+        <ul class="navbar-nav">
+          {% if current_user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                {{ current_user.nom_usuario }} {{ current_user.ape_usuario }}
+              </a>
+              <ul class="dropdown-menu">
+                {% if current_user.is_admin %}
+                  <li><a class="dropdown-item" href="{{ url_for('admin_panel') }}">Panel Admin</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                {% endif %}
+                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Registrarse</a></li>
+          {% endif %}
+        </ul>
       </div>
     </div>
   </nav>
+
+  <!-- Mensajes Flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="container mt-3">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
 
   <!-- CONTENIDO PRINCIPAL -->
   <header class="bg-light py-5 text-center">
