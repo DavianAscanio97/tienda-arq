@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session, flash
+from flask import Flask, request, render_template, redirect, url_for, session, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
@@ -240,6 +240,57 @@ def admin_panel():
                          productos_count=productos_count,
                          categorias_count=categorias_count,
                          ventas_count=ventas_count)
+
+# --- API REST: Endpoint de estado del servicio ---
+@app.route('/status', methods=['GET'])
+def service_status():
+    """
+    Endpoint de prueba para verificar el estado del servicio.
+    Devuelve un mensaje JSON indicando que el servicio funciona correctamente.
+    """
+    return jsonify(message="El servicio está funcionando correctamente.")
+
+# --- API REST: Listar productos ---
+@app.route('/api/productos', methods=['GET'])
+def listar_productos():
+    """
+    Endpoint para obtener todos los productos en formato JSON.
+    """
+    productos = Producto.query.all()
+    return jsonify([
+        {
+            "id": p.id,
+            "nombre": p.nombre,
+            "descripcion": p.descripcion,
+            "precio": p.precio,
+            "id_categoria": p.id_categoria
+        }
+        for p in productos
+    ])
+
+# --- API REST: Agregar producto ---
+@app.route('/api/agregar', methods=['POST'])
+def agregar_producto():
+    """
+    Endpoint para agregar un nuevo producto vía JSON.
+    Espera los campos: nombre, descripcion, precio, id_categoria.
+    """
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "No se proporcionaron datos JSON"}), 400
+    try:
+        nuevo = Producto(
+            nombre=data["nombre"],
+            descripcion=data.get("descripcion", ""),
+            precio=data["precio"],
+            id_categoria=data["id_categoria"]
+        )
+        db.session.add(nuevo)
+        db.session.commit()
+        return jsonify({"message": "Producto agregado correctamente."}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Error al agregar producto: {str(e)}"}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
