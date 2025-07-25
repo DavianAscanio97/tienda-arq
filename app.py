@@ -269,7 +269,7 @@ def listar_productos():
     ])
 
 # --- API REST: Agregar producto ---
-@app.route('/api/agregar', methods=['POST'])
+@app.route('/api/productos/agregar', methods=['POST'])
 def agregar_producto():
     """
     Endpoint para agregar un nuevo producto vía JSON.
