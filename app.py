@@ -5,11 +5,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-from flask_admin.form import Select2Widget
-from wtforms.fields import SelectField
-from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_admin import AdminIndexView, expose
-from flask_login import current_user
 
 # Crear la app Flask
 app = Flask(__name__)
@@ -121,17 +117,7 @@ class SecureModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.is_admin
 
-class ProductoAdmin(SecureModelView):
-    form_columns = ['nombre', 'descripcion', 'imagen', 'precio', 'id_categoria']
-    form_extra_fields = {
-        'id_categoria': QuerySelectField(
-            'Categoría',
-            query_factory=lambda: Categoria.query.all(),
-            get_label='nom_categoria',
-            allow_blank=False,
-            get_pk=lambda c: c.id_categoria
-        )
-    }
+
 
 class MyAdminIndexView(AdminIndexView):
     @expose('/')
@@ -165,7 +151,6 @@ admin = Admin(
 )
 admin.add_view(SecureModelView(Usuario, db.session))
 admin.add_view(SecureModelView(Categoria, db.session))
-admin.add_view(ProductoAdmin(Producto, db.session))
 
 @app.route('/')
 def home():
