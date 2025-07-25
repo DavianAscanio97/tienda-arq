@@ -220,10 +220,8 @@
       </button>
       <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav me-auto">
-          <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-home"></i> Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-envelope"></i> Contacto</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('productos') }}"><i class="fas fa-box"></i> Productos</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('servicios') }}"><i class="fas fa-cogs"></i> Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Inicio</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('productos') }}"><i class="fas fa-box"></i> Productos</a></li>
         </ul>
         <ul class="navbar-nav">
           {% if current_user.is_authenticated %}
@@ -233,7 +231,7 @@
               </a>
               <ul class="dropdown-menu">
                 {% if current_user.is_admin %}
-                  <li><a class="dropdown-item" href="{{ url_for('admin_panel') }}"><i class="fas fa-crown"></i> Panel Admin</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('admin.index') }}"><i class="fas fa-crown"></i> Panel Admin</a></li>
                   <li><hr class="dropdown-divider"></li>
                 {% endif %}
                 <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
@@ -269,13 +267,10 @@
       <div class="row align-items-center">
         <div class="col-lg-6 hero-content">
           <h1 class="hero-title">Bienvenidos a La Tienda Digital</h1>
-          <p class="hero-subtitle">Descubre nuestra increíble selección de productos y servicios de alta calidad. Tu tienda online de confianza.</p>
+          <p class="hero-subtitle">Descubre nuestra increíble selección de productos de alta calidad. Tu tienda online de confianza.</p>
           <div class="d-flex gap-3">
             <a href="{{ url_for('productos') }}" class="btn btn-light btn-lg">
               <i class="fas fa-shopping-cart"></i> Ver Productos
-            </a>
-            <a href="{{ url_for('servicios') }}" class="btn btn-outline-light btn-lg">
-              <i class="fas fa-cogs"></i> Nuestros Servicios
             </a>
           </div>
         </div>

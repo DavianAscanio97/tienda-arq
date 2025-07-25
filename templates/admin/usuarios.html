@@ -1,0 +1,72 @@
+{% extends 'admin/base.html' %}
+
+{% block page_body %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-users"></i> Gestión de Usuarios</h2>
+        <a href="{{ url_for('usuario_nuevo') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nuevo Usuario
+        </a>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Email</th>
+                            <th>Admin</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.id_ud_usuario }}</td>
+                            <td>{{ usuario.nom_usuario }}</td>
+                            <td>{{ usuario.ape_usuario }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>
+                                {% if usuario.is_admin %}
+                                    <span class="badge bg-success">Admin</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Usuario</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" onclick="editarUsuario({{ usuario.id_ud_usuario }})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="eliminarUsuario({{ usuario.id_ud_usuario }})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+function editarUsuario(id) {
+    // Redirigir a la página de edición
+    window.location.href = '/admin/usuarios/editar/' + id;
+}
+
+function eliminarUsuario(id) {
+    if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+        window.location.href = '/admin/usuarios/eliminar/' + id;
+    }
+}
+</script>
+{% endblock %} 

@@ -269,9 +269,7 @@
       <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-envelope"></i> Contacto</a></li>
           <li class="nav-item"><a class="nav-link active" href="{{ url_for('productos') }}"><i class="fas fa-box"></i> Productos</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('servicios') }}"><i class="fas fa-cogs"></i> Servicios</a></li>
         </ul>
         <ul class="navbar-nav">
           {% if current_user.is_authenticated %}
@@ -281,7 +279,7 @@
               </a>
               <ul class="dropdown-menu">
                 {% if current_user.is_admin %}
-                  <li><a class="dropdown-item" href="{{ url_for('admin_panel') }}"><i class="fas fa-crown"></i> Panel Admin</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('admin.index') }}"><i class="fas fa-crown"></i> Panel Admin</a></li>
                   <li><hr class="dropdown-divider"></li>
                 {% endif %}
                 <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
@@ -405,8 +403,6 @@
         <div class="footer-links">
           <a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Inicio</a>
           <a href="{{ url_for('productos') }}"><i class="fas fa-box"></i> Productos</a>
-          <a href="{{ url_for('servicios') }}"><i class="fas fa-cogs"></i> Servicios</a>
-          <a href="#"><i class="fas fa-envelope"></i> Contacto</a>
         </div>
         <div class="social-links">
           <a href="#"><i class="fab fa-facebook-f"></i></a>
