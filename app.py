@@ -5,6 +5,11 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from flask_admin.form import Select2Widget
+from wtforms.fields import SelectField
+from wtforms_sqlalchemy.fields import QuerySelectField
+from flask_admin import AdminIndexView
+from flask_admin import expose
 
 # Crear la app Flask
 app = Flask(__name__)
@@ -82,6 +87,7 @@ class Producto(db.Model):
     imagen = db.Column(db.String(200))
     precio = db.Column(db.Float, nullable=False)
     id_categoria = db.Column(db.Integer, db.ForeignKey('categorias.id_categoria'), nullable=False)
+    categoria = db.relationship('Categoria', backref='productos')
 
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
@@ -115,11 +121,40 @@ class SecureModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.is_admin
 
+class ProductoAdmin(SecureModelView):
+    form_columns = ['nombre', 'descripcion', 'imagen', 'precio', 'id_categoria']
+    form_extra_fields = {
+        'id_categoria': QuerySelectField(
+            'Categoría',
+            query_factory=lambda: Categoria.query.all(),
+            get_label='nom_categoria',
+            allow_blank=False,
+            get_pk=lambda c: c.id_categoria
+        )
+    }
+
+class CustomAdminIndexView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        usuarios_count = Usuario.query.count()
+        productos_count = Producto.query.count()
+        categorias_count = Categoria.query.count()
+        return self.render('admin/dashboard.html',
+            usuarios_count=usuarios_count,
+            productos_count=productos_count,
+            categorias_count=categorias_count
+        )
+
 # Flask-Admin
-admin = Admin(app, name='Panel Admin', template_mode='bootstrap3')
+admin = Admin(
+    app,
+    name='Panel Admin',
+    template_mode='bootstrap3',
+    index_view=CustomAdminIndexView(name='Dashboard')
+)
 admin.add_view(SecureModelView(Usuario, db.session))
 admin.add_view(SecureModelView(Categoria, db.session))
-admin.add_view(SecureModelView(Producto, db.session))
+admin.add_view(ProductoAdmin(Producto, db.session))
 
 @app.route("/")
 def home():
@@ -131,7 +166,9 @@ def inicio():
 
 @app.route('/productos')
 def productos():
-    return render_template('plantilla1.html')
+    productos = Producto.query.all()
+    categorias = {c.id_categoria: c.nom_categoria for c in Categoria.query.all()}
+    return render_template('plantilla1.html', productos=productos, categorias=categorias)
 
 @app.route('/servicios')
 def servicios():
@@ -222,24 +259,88 @@ def register():
     
     return render_template('register.html')
 
-@app.route('/admin')
-@login_required
-def admin_panel():
-    if not current_user.is_admin:
-        flash('No tienes permisos para acceder al panel de administración', 'error')
-        return redirect(url_for('home'))
-    
-    # Obtener estadísticas
-    usuarios_count = Usuario.query.count()
-    productos_count = Producto.query.count()
-    categorias_count = Categoria.query.count()
-    ventas_count = 0  # Por ahora 0, se puede implementar después
-    
-    return render_template('admin-welcome.html', 
-                         usuarios_count=usuarios_count,
-                         productos_count=productos_count,
-                         categorias_count=categorias_count,
-                         ventas_count=ventas_count)
+# --- CRUD Productos ---
+from flask import abort
+
+@app.route('/admin/productos')
+def productos_crud():
+    productos = Producto.query.all()
+    categorias = {c.id_categoria: c.nom_categoria for c in Categoria.query.all()}
+    return render_template('productos_crud.html', productos=productos, categorias=categorias)
+
+@app.route('/admin/productos/nuevo', methods=['GET', 'POST'])
+def producto_nuevo():
+    categorias = Categoria.query.all()
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        descripcion = request.form['descripcion']
+        precio = request.form['precio']
+        imagen = request.form['imagen']
+        id_categoria = request.form['id_categoria']
+        nuevo = Producto(nombre=nombre, descripcion=descripcion, precio=precio, imagen=imagen, id_categoria=id_categoria)
+        db.session.add(nuevo)
+        db.session.commit()
+        flash('Producto agregado correctamente', 'success')
+        return redirect(url_for('productos_crud'))
+    return render_template('producto_form.html', categorias=categorias, producto=None)
+
+@app.route('/admin/productos/editar/<int:id>', methods=['GET', 'POST'])
+def producto_editar(id):
+    producto = Producto.query.get_or_404(id)
+    categorias = Categoria.query.all()
+    if request.method == 'POST':
+        producto.nombre = request.form['nombre']
+        producto.descripcion = request.form['descripcion']
+        producto.precio = request.form['precio']
+        producto.imagen = request.form['imagen']
+        producto.id_categoria = request.form['id_categoria']
+        db.session.commit()
+        flash('Producto actualizado correctamente', 'success')
+        return redirect(url_for('productos_crud'))
+    return render_template('producto_form.html', categorias=categorias, producto=producto)
+
+@app.route('/admin/productos/eliminar/<int:id>')
+def producto_eliminar(id):
+    producto = Producto.query.get_or_404(id)
+    db.session.delete(producto)
+    db.session.commit()
+    flash('Producto eliminado correctamente', 'success')
+    return redirect(url_for('productos_crud'))
+
+# --- CRUD Categorías ---
+@app.route('/admin/categorias')
+def categorias_crud():
+    categorias = Categoria.query.all()
+    return render_template('categorias_crud.html', categorias=categorias)
+
+@app.route('/admin/categorias/nueva', methods=['GET', 'POST'])
+def categoria_nueva():
+    if request.method == 'POST':
+        nom_categoria = request.form['nom_categoria']
+        nueva = Categoria(nom_categoria=nom_categoria)
+        db.session.add(nueva)
+        db.session.commit()
+        flash('Categoría agregada correctamente', 'success')
+        return redirect(url_for('categorias_crud'))
+    return render_template('categoria_form.html', categoria=None)
+
+@app.route('/admin/categorias/editar/<int:id>', methods=['GET', 'POST'])
+def categoria_editar(id):
+    categoria = Categoria.query.get_or_404(id)
+    if request.method == 'POST':
+        categoria.nom_categoria = request.form['nom_categoria']
+        db.session.commit()
+        flash('Categoría actualizada correctamente', 'success')
+        return redirect(url_for('categorias_crud'))
+    return render_template('categoria_form.html', categoria=categoria)
+
+@app.route('/admin/categorias/eliminar/<int:id>')
+def categoria_eliminar(id):
+    categoria = Categoria.query.get_or_404(id)
+    db.session.delete(categoria)
+    db.session.commit()
+    flash('Categoría eliminada correctamente', 'success')
+    return redirect(url_for('categorias_crud'))
 
 # --- API REST: Endpoint de estado del servicio ---
 @app.route('/status', methods=['GET'])

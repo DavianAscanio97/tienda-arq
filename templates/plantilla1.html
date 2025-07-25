@@ -372,149 +372,28 @@
   <section class="products-section">
     <div class="container">
       <div class="row g-4">
-        <!-- Producto 1 -->
+        {% for producto in productos %}
         <div class="col-md-4 col-lg-3">
           <div class="product-card">
             <div class="product-image">
-              <i class="fas fa-laptop"></i>
+              {% if producto.imagen %}
+                <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" style="width:100%;height:100%;object-fit:cover;">
+              {% else %}
+                <i class="fas fa-box"></i>
+              {% endif %}
             </div>
             <div class="product-info">
-              <span class="product-category">Electrónicos</span>
-              <h3 class="product-title">Laptop Gaming Pro</h3>
-              <p class="product-description">Potente laptop para gaming con gráficos de última generación.</p>
-              <div class="product-price">$1,299.99</div>
+              <span class="product-category">{{ categorias[producto.id_categoria] }}</span>
+              <h3 class="product-title">{{ producto.nombre }}</h3>
+              <p class="product-description">{{ producto.descripcion }}</p>
+              <div class="product-price">${{ '%.2f'|format(producto.precio) }}</div>
               <button class="btn btn-primary btn-product">
                 <i class="fas fa-shopping-cart"></i> Agregar al Carrito
               </button>
             </div>
           </div>
         </div>
-
-        <!-- Producto 2 -->
-        <div class="col-md-4 col-lg-3">
-          <div class="product-card">
-            <div class="product-image">
-              <i class="fas fa-tshirt"></i>
-            </div>
-            <div class="product-info">
-              <span class="product-category">Ropa</span>
-              <h3 class="product-title">Camiseta Premium</h3>
-              <p class="product-description">Camiseta de algodón 100% con diseño exclusivo.</p>
-              <div class="product-price">$29.99</div>
-              <button class="btn btn-primary btn-product">
-                <i class="fas fa-shopping-cart"></i> Agregar al Carrito
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Producto 3 -->
-        <div class="col-md-4 col-lg-3">
-          <div class="product-card">
-            <div class="product-image">
-              <i class="fas fa-mobile-alt"></i>
-            </div>
-            <div class="product-info">
-              <span class="product-category">Electrónicos</span>
-              <h3 class="product-title">Smartphone Ultra</h3>
-              <p class="product-description">Smartphone con cámara de 108MP y batería de larga duración.</p>
-              <div class="product-price">$899.99</div>
-              <button class="btn btn-primary btn-product">
-                <i class="fas fa-shopping-cart"></i> Agregar al Carrito
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Producto 4 -->
-        <div class="col-md-4 col-lg-3">
-          <div class="product-card">
-            <div class="product-image">
-              <i class="fas fa-couch"></i>
-            </div>
-            <div class="product-info">
-              <span class="product-category">Hogar</span>
-              <h3 class="product-title">Sofá Moderno</h3>
-              <p class="product-description">Sofá elegante y cómodo para tu sala de estar.</p>
-              <div class="product-price">$599.99</div>
-              <button class="btn btn-primary btn-product">
-                <i class="fas fa-shopping-cart"></i> Agregar al Carrito
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Producto 5 -->
-        <div class="col-md-4 col-lg-3">
-          <div class="product-card">
-            <div class="product-image">
-              <i class="fas fa-headphones"></i>
-            </div>
-            <div class="product-info">
-              <span class="product-category">Electrónicos</span>
-              <h3 class="product-title">Auriculares Wireless</h3>
-              <p class="product-description">Auriculares con cancelación de ruido y sonido premium.</p>
-              <div class="product-price">$199.99</div>
-              <button class="btn btn-primary btn-product">
-                <i class="fas fa-shopping-cart"></i> Agregar al Carrito
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Producto 6 -->
-        <div class="col-md-4 col-lg-3">
-          <div class="product-card">
-            <div class="product-image">
-              <i class="fas fa-shoe-prints"></i>
-            </div>
-            <div class="product-info">
-              <span class="product-category">Ropa</span>
-              <h3 class="product-title">Zapatillas Deportivas</h3>
-              <p class="product-description">Zapatillas cómodas para running y entrenamiento.</p>
-              <div class="product-price">$89.99</div>
-              <button class="btn btn-primary btn-product">
-                <i class="fas fa-shopping-cart"></i> Agregar al Carrito
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Producto 7 -->
-        <div class="col-md-4 col-lg-3">
-          <div class="product-card">
-            <div class="product-image">
-              <i class="fas fa-lightbulb"></i>
-            </div>
-            <div class="product-info">
-              <span class="product-category">Hogar</span>
-              <h3 class="product-title">Lámpara LED</h3>
-              <p class="product-description">Lámpara LED inteligente con control por app.</p>
-              <div class="product-price">$49.99</div>
-              <button class="btn btn-primary btn-product">
-                <i class="fas fa-shopping-cart"></i> Agregar al Carrito
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Producto 8 -->
-        <div class="col-md-4 col-lg-3">
-          <div class="product-card">
-            <div class="product-image">
-              <i class="fas fa-watch"></i>
-            </div>
-            <div class="product-info">
-              <span class="product-category">Electrónicos</span>
-              <h3 class="product-title">Smartwatch Pro</h3>
-              <p class="product-description">Reloj inteligente con monitor cardíaco y GPS.</p>
-              <div class="product-price">$299.99</div>
-              <button class="btn btn-primary btn-product">
-                <i class="fas fa-shopping-cart"></i> Agregar al Carrito
-              </button>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </section>
